@@ -539,19 +539,6 @@ loadPersoDetectionAddOns (){
  	chown -R nifi:nifi /home/nifi/*
  
 }
-echo "*********************************Waiting for cluster install to complete..."
-waitForServiceToStart YARN
-
-waitForServiceToStart HDFS
-
-waitForServiceToStart HIVE
-
-waitForServiceToStart ZOOKEEPER
-
-waitForServiceToStart NIFI
-
-sleep 10
-
 
 
 echo "*********************************Install Utilities..."
