@@ -1,6 +1,7 @@
 desc: Multinode HDP3 with HDF32 cluster for Personality Recognition Demo
 seq:
 - open_port: [-1, 1, 65534, '192.175.27.2/32']  # Hwx VPN
+- open_port: [tcp, 22, 22, '0.0.0.0/0']
 - open_port: [tcp, 3080, 3080, '0.0.0.0/0']
 - open_port: [tcp, 3306, 3306, '0.0.0.0/0']
 - open_port: [tcp, 3376, 3376, '0.0.0.0/0']

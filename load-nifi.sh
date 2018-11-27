@@ -13,12 +13,12 @@ waitForAmbari () {
        	# Wait for Ambari
        	LOOPESCAPE="false"
        	until [ "$LOOPESCAPE" == true ]; do
-        TASKSTATUS=$(curl -u admin:admin -I -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME | grep -Po 'OK')
+        TASKSTATUS=$(curl -u admin:HWseftw33#HWseftw33# -I -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME | grep -Po 'OK')
         if [ "$TASKSTATUS" == OK ]; then
                 LOOPESCAPE="true"
                 TASKSTATUS="READY"
         else
-               	AUTHSTATUS=$(curl -u admin:admin -I -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME | grep HTTP | grep -Po '( [0-9]+)'| grep -Po '([0-9]+)')
+               	AUTHSTATUS=$(curl -u admin:HWseftw33#HWseftw33# -I -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME | grep HTTP | grep -Po '( [0-9]+)'| grep -Po '([0-9]+)')
                	if [ "$AUTHSTATUS" == 403 ]; then
                	echo "THE AMBARI PASSWORD IS NOT SET TO: admin"
                	echo "RUN COMMAND: ambari-admin-password-reset, SET PASSWORD: admin"
@@ -35,7 +35,7 @@ waitForAmbari () {
 
 serviceExists () {
        	SERVICE=$1
-       	SERVICE_STATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"status" : ' | grep -Po '([0-9]+)')
+       	SERVICE_STATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"status" : ' | grep -Po '([0-9]+)')
 
        	if [ "$SERVICE_STATUS" == 404 ]; then
        		echo 0
@@ -46,7 +46,7 @@ serviceExists () {
 
 getServiceStatus () {
        	SERVICE=$1
-       	SERVICE_STATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
+       	SERVICE_STATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
 
        	echo $SERVICE_STATUS
 }
@@ -54,13 +54,13 @@ getServiceStatus () {
 waitForService () {
        	# Ensure that Service is not in a transitional state
        	SERVICE=$1
-       	SERVICE_STATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
+       	SERVICE_STATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
        	sleep 2
        	echo "$SERVICE STATUS: $SERVICE_STATUS"
        	LOOPESCAPE="false"
        	if ! [[ "$SERVICE_STATUS" == STARTED || "$SERVICE_STATUS" == INSTALLED ]]; then
         until [ "$LOOPESCAPE" == true ]; do
-                SERVICE_STATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
+                SERVICE_STATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
             if [[ "$SERVICE_STATUS" == STARTED || "$SERVICE_STATUS" == INSTALLED ]]; then
                 LOOPESCAPE="true"
             fi
@@ -73,13 +73,13 @@ waitForService () {
 waitForServiceToStart () {
        	# Ensure that Service is not in a transitional state
        	SERVICE=$1
-       	SERVICE_STATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
+       	SERVICE_STATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
        	sleep 2
        	echo "$SERVICE STATUS: $SERVICE_STATUS"
        	LOOPESCAPE="false"
        	if ! [[ "$SERVICE_STATUS" == STARTED ]]; then
         	until [ "$LOOPESCAPE" == true ]; do
-                SERVICE_STATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
+                SERVICE_STATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep '"state" :' | grep -Po '([A-Z]+)')
             if [[ "$SERVICE_STATUS" == STARTED ]]; then
                 LOOPESCAPE="true"
             fi
@@ -94,13 +94,13 @@ stopService () {
        	SERVICE_STATUS=$(getServiceStatus $SERVICE)
        	echo "*********************************Stopping Service $SERVICE ..."
        	if [ "$SERVICE_STATUS" == STARTED ]; then
-        TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d "{\"RequestInfo\": {\"context\": \"Stop $SERVICE\"}, \"ServiceInfo\": {\"maintenance_state\" : \"OFF\", \"state\": \"INSTALLED\"}}" http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep "id" | grep -Po '([0-9]+)')
+        TASKID=$(curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X PUT -d "{\"RequestInfo\": {\"context\": \"Stop $SERVICE\"}, \"ServiceInfo\": {\"maintenance_state\" : \"OFF\", \"state\": \"INSTALLED\"}}" http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep "id" | grep -Po '([0-9]+)')
 
         echo "*********************************Stop $SERVICE TaskID $TASKID"
         sleep 2
         LOOPESCAPE="false"
         until [ "$LOOPESCAPE" == true ]; do
-            TASKSTATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
+            TASKSTATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
             if [ "$TASKSTATUS" == COMPLETED ]; then
                 LOOPESCAPE="true"
             fi
@@ -118,13 +118,13 @@ startService (){
        	SERVICE_STATUS=$(getServiceStatus $SERVICE)
        	echo "*********************************Starting Service $SERVICE ..."
        	if [ "$SERVICE_STATUS" == INSTALLED ]; then
-        TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d "{\"RequestInfo\": {\"context\": \"Start $SERVICE\"}, \"ServiceInfo\": {\"maintenance_state\" : \"OFF\", \"state\": \"STARTED\"}}" http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep "id" | grep -Po '([0-9]+)')
+        TASKID=$(curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X PUT -d "{\"RequestInfo\": {\"context\": \"Start $SERVICE\"}, \"ServiceInfo\": {\"maintenance_state\" : \"OFF\", \"state\": \"STARTED\"}}" http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep "id" | grep -Po '([0-9]+)')
 
         echo "*********************************Start $SERVICE TaskID $TASKID"
         sleep 2
         LOOPESCAPE="false"
         until [ "$LOOPESCAPE" == true ]; do
-            TASKSTATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
+            TASKSTATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
             if [[ "$TASKSTATUS" == COMPLETED || "$TASKSTATUS" == FAILED ]]; then
                 LOOPESCAPE="true"
             fi
@@ -141,13 +141,13 @@ startServiceAndComplete (){
        	SERVICE_STATUS=$(getServiceStatus $SERVICE)
        	echo "*********************************Starting Service $SERVICE ..."
        	if [ "$SERVICE_STATUS" == INSTALLED ]; then
-        TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d "{\"RequestInfo\": {\"context\": \"INSTALL COMPLETE\"}, \"ServiceInfo\": {\"maintenance_state\" : \"OFF\", \"state\": \"STARTED\"}}" http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep "id" | grep -Po '([0-9]+)')
+        TASKID=$(curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X PUT -d "{\"RequestInfo\": {\"context\": \"INSTALL COMPLETE\"}, \"ServiceInfo\": {\"maintenance_state\" : \"OFF\", \"state\": \"STARTED\"}}" http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/$SERVICE | grep "id" | grep -Po '([0-9]+)')
 
         echo "*********************************Start $SERVICE TaskID $TASKID"
         sleep 2
         LOOPESCAPE="false"
         until [ "$LOOPESCAPE" == true ]; do
-            TASKSTATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
+            TASKSTATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
             if [[ "$TASKSTATUS" == COMPLETED || "$TASKSTATUS" == FAILED ]]; then
                 LOOPESCAPE="true"
             fi
@@ -163,13 +163,13 @@ startServiceAndComplete (){
 installNifiService () {
        	echo "*********************************Creating NIFI service..."
        	# Create NIFI service
-       	curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI
+       	curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI
 
        	sleep 2
        	echo "*********************************Adding NIFI MASTER component..."
        	# Add NIFI Master component to service
-       	curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI/components/NIFI_MASTER
-		curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI/components/NIFI_CA
+       	curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI/components/NIFI_MASTER
+		curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI/components/NIFI_CA
 		
        	sleep 2
        	echo "*********************************Creating NIFI configuration..."
@@ -203,21 +203,21 @@ installNifiService () {
 		
        	echo "*********************************Adding NIFI MASTER role to Host..."
        	# Add NIFI Master role to Ambari Host
-       	curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts/$AMBARI_HOST/host_components/NIFI_MASTER
+       	curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts/$AMBARI_HOST/host_components/NIFI_MASTER
 
        	echo "*********************************Adding NIFI CA role to Host..."
 		# Add NIFI CA role to Ambari Host
-       	curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts/$AMBARI_HOST/host_components/NIFI_CA
+       	curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts/$AMBARI_HOST/host_components/NIFI_CA
 
        	sleep 30
        	echo "*********************************Installing NIFI Service"
        	# Install NIFI Service
-       	TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Nifi"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI | grep "id" | grep -Po '([0-9]+)')
+       	TASKID=$(curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Nifi"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI | grep "id" | grep -Po '([0-9]+)')
 		
 		sleep 2       	
        	if [ -z $TASKID ]; then
        		until ! [ -z $TASKID ]; do
-       			TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Nifi"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI | grep "id" | grep -Po '([0-9]+)')
+       			TASKID=$(curl -u admin:HWseftw33#HWseftw33# -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Nifi"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/NIFI | grep "id" | grep -Po '([0-9]+)')
        		 	echo "*********************************AMBARI TaskID " $TASKID
        		done
        	fi
@@ -226,7 +226,7 @@ installNifiService () {
        	sleep 2
        	LOOPESCAPE="false"
        	until [ "$LOOPESCAPE" == true ]; do
-               	TASKSTATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
+               	TASKSTATUS=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
                	if [ "$TASKSTATUS" == COMPLETED ]; then
                        	LOOPESCAPE="true"
                	fi
@@ -239,7 +239,7 @@ installNifiService () {
 waitForNifiServlet () {
        	LOOPESCAPE="false"
        	until [ "$LOOPESCAPE" == true ]; do
-       		TASKSTATUS=$(curl -u admin:admin -i -X GET http://$AMBARI_HOST:9090/nifi-api/controller | grep -Po 'OK')
+       		TASKSTATUS=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET http://$AMBARI_HOST:9090/nifi-api/controller | grep -Po 'OK')
        		if [ "$TASKSTATUS" == OK ]; then
                		LOOPESCAPE="true"
        		else
@@ -276,7 +276,7 @@ installHDPSearchManagementPack () {
 
 getHostByPosition (){
 	HOST_POSITION=$1
-	HOST_NAME=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts|grep -Po '"host_name" : "[a-zA-Z0-9_\W]+'|grep -Po ' : "([^"]+)'|grep -Po '[^: "]+'|tail -n +$HOST_POSITION|head -1)
+	HOST_NAME=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts|grep -Po '"host_name" : "[a-zA-Z0-9_\W]+'|grep -Po ' : "([^"]+)'|grep -Po '[^: "]+'|tail -n +$HOST_POSITION|head -1)
 	
 	echo $HOST_NAME
 }
@@ -291,7 +291,7 @@ configureAmbariRepos (){
 	gpgcheck=0
 	EOF
 	
-	curl -u admin:admin -d @$ROOT_PATH/CloudBreakArtifacts/hdf-config/api-payload/repo_update.json -H "X-Requested-By: ambari" -X PUT http://$AMBARI_HOST:8080/api/v1/stacks/HDP/versions/2.6/repository_versions/1
+	curl -u admin:HWseftw33#HWseftw33# -d @$ROOT_PATH/CloudBreakArtifacts/hdf-config/api-payload/repo_update.json -H "X-Requested-By: ambari" -X PUT http://$AMBARI_HOST:8080/api/v1/stacks/HDP/versions/2.6/repository_versions/1
 }
 
 installMySQL (){
@@ -397,7 +397,7 @@ deployTemplateToNifi () {
 
         # Instantiate NIFI Template 3.x
         echo "*********************************Instantiating NIFI Flow..."
-        curl -u admin:admin -i -H "Content-Type:application/json" -d "{\"templateId\":\"$TEMPLATEID\",\"originX\":100,\"originY\":100}" -X POST http://$NIFI_HOST:9090/nifi-api/process-groups/root/template-instance
+        curl -u admin:HWseftw33#HWseftw33# -i -H "Content-Type:application/json" -d "{\"templateId\":\"$TEMPLATEID\",\"originX\":100,\"originY\":100}" -X POST http://$NIFI_HOST:9090/nifi-api/process-groups/root/template-instance
         sleep 1
 
         # Rename NIFI Root Group HDF 3.x
@@ -415,7 +415,7 @@ deployTemplateToNifi () {
 }
 
 configureNifiTempate () {
-  GROUP_TARGETS=$(curl -u admin:admin -i -X GET http://$AMBARI_HOST:9090/nifi-api/process-groups/root/process-groups | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)')
+  GROUP_TARGETS=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET http://$AMBARI_HOST:9090/nifi-api/process-groups/root/process-groups | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)')
     length=${#GROUP_TARGETS[@]}
     echo $length
     echo ${GROUP_TARGETS[0]}
@@ -432,7 +432,7 @@ configureNifiTempate () {
         echo "***********************************************************done handle processors"
     done
 
-    ROOT_TARGET=$(curl -u admin:admin -i -X GET http://$AMBARI_HOST:9090/nifi-api/process-groups/root| grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)')
+    ROOT_TARGET=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET http://$AMBARI_HOST:9090/nifi-api/process-groups/root| grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)')
 
     handleGroupPorts $ROOT_TARGET
 
@@ -442,16 +442,16 @@ configureNifiTempate () {
 handleGroupProcessors (){
         TARGET_GROUP=$1
 
-        TARGETS=($(curl -u admin:admin -i -X GET $TARGET_GROUP/processors | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)'))
+        TARGETS=($(curl -u admin:HWseftw33#HWseftw33# -i -X GET $TARGET_GROUP/processors | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)'))
         length=${#TARGETS[@]}
         echo $length
         echo ${TARGETS[0]}
 
         for ((i = 0; i < $length; i++))
         do
-          ID=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"id":"([a-zA-z0-9\-]+)'|grep -Po ':"([a-zA-z0-9\-]+)'|grep -Po '([a-zA-z0-9\-]+)'|head -1)
-          REVISION=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '\"version\":([0-9]+)'|grep -Po '([0-9]+)')
-          TYPE=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"type":"([a-zA-Z0-9\-.]+)' |grep -Po ':"([a-zA-Z0-9\-.]+)' |grep -Po '([a-zA-Z0-9\-.]+)' |head -1)
+          ID=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '"id":"([a-zA-z0-9\-]+)'|grep -Po ':"([a-zA-z0-9\-]+)'|grep -Po '([a-zA-z0-9\-]+)'|head -1)
+          REVISION=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '\"version\":([0-9]+)'|grep -Po '([0-9]+)')
+          TYPE=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '"type":"([a-zA-Z0-9\-.]+)' |grep -Po ':"([a-zA-Z0-9\-.]+)' |grep -Po '([a-zA-Z0-9\-.]+)' |head -1)
           echo "Current Processor Path: ${TARGETS[i]}"
           echo "Current Processor Revision: $REVISION"
           echo "Current Processor ID: $ID"
@@ -460,21 +460,21 @@ handleGroupProcessors (){
             if ! [ -z $(echo $TYPE|grep "Record") ]; then
               echo "***************************This is a Record Processor"
 
-              RECORD_READER=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"record-reader":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
-                RECORD_WRITER=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"record-writer":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
+              RECORD_READER=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '"record-reader":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
+                RECORD_WRITER=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '"record-writer":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
 
                 echo "Record Reader: $RECORD_READER"
                 echo "Record Writer: $RECORD_WRITER"
 
-              SCHEMA_REGISTRY=$(curl -u admin:admin -i -X GET http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_READER |grep -Po '"schema-registry":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
+              SCHEMA_REGISTRY=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_READER |grep -Po '"schema-registry":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
 
               echo "Schema Registry: $SCHEMA_REGISTRY"
 
-              curl -u admin:admin -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$SCHEMA_REGISTRY\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$SCHEMA_REGISTRY\",\"state\":\"ENABLED\",\"properties\":{\"url\":\"http:\/\/$AMBARI_HOST:7788\/api\/v1\"}}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$SCHEMA_REGISTRY
+              curl -u admin:HWseftw33#HWseftw33# -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$SCHEMA_REGISTRY\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$SCHEMA_REGISTRY\",\"state\":\"ENABLED\",\"properties\":{\"url\":\"http:\/\/$AMBARI_HOST:7788\/api\/v1\"}}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$SCHEMA_REGISTRY
 
-              curl -u admin:admin -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$RECORD_READER\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$RECORD_READER\",\"state\":\"ENABLED\"}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_READER
+              curl -u admin:HWseftw33#HWseftw33# -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$RECORD_READER\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$RECORD_READER\",\"state\":\"ENABLED\"}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_READER
 
-              curl -u admin:admin -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$RECORD_WRITER\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$RECORD_WRITER\",\"state\":\"ENABLED\"}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_WRITER
+              curl -u admin:HWseftw33#HWseftw33# -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$RECORD_WRITER\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$RECORD_WRITER\",\"state\":\"ENABLED\"}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_WRITER
 
             fi
           if ! [ -z $(echo $TYPE|grep "PutKafka") ] || ! [ -z $(echo $TYPE|grep "PublishKafka") ]; then
@@ -491,23 +491,23 @@ handleGroupProcessors (){
             fi
           echo "$PAYLOAD"
 
-          curl -u admin:admin -i -H "Content-Type:application/json" -d "${PAYLOAD}" -X PUT ${TARGETS[i]}
+          curl -u admin:HWseftw33#HWseftw33# -i -H "Content-Type:application/json" -d "${PAYLOAD}" -X PUT ${TARGETS[i]}
         done
 }
 
 handleGroupPorts (){
         TARGET_GROUP=$1
 
-        TARGETS=($(curl -u admin:admin -i -X GET $TARGET_GROUP/output-ports | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)'))
+        TARGETS=($(curl -u admin:HWseftw33#HWseftw33# -i -X GET $TARGET_GROUP/output-ports | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)'))
         length=${#TARGETS[@]}
         echo $length
         echo ${TARGETS[0]}
 
         for ((i = 0; i < $length; i++))
         do
-          ID=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"id":"([a-zA-z0-9\-]+)'|grep -Po ':"([a-zA-z0-9\-]+)'|grep -Po '([a-zA-z0-9\-]+)'|head -1)
-          REVISION=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '\"version\":([0-9]+)'|grep -Po '([0-9]+)')
-          TYPE=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"type":"([a-zA-Z0-9\-.]+)' |grep -Po ':"([a-zA-Z0-9\-.]+)' |grep -Po '([a-zA-Z0-9\-.]+)' |head -1)
+          ID=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '"id":"([a-zA-z0-9\-]+)'|grep -Po ':"([a-zA-z0-9\-]+)'|grep -Po '([a-zA-z0-9\-]+)'|head -1)
+          REVISION=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '\"version\":([0-9]+)'|grep -Po '([0-9]+)')
+          TYPE=$(curl -u admin:HWseftw33#HWseftw33# -i -X GET ${TARGETS[i]} |grep -Po '"type":"([a-zA-Z0-9\-.]+)' |grep -Po ':"([a-zA-Z0-9\-.]+)' |grep -Po '([a-zA-Z0-9\-.]+)' |head -1)
           echo "Current Processor Path: ${TARGETS[i]}"
           echo "Current Processor Revision: $REVISION"
           echo "Current Processor ID: $ID"
@@ -517,7 +517,7 @@ handleGroupPorts (){
           PAYLOAD=$(echo "{\"id\":\"$ID\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$ID\",\"state\": \"RUNNING\"}}")
 
           echo "PAYLOAD"
-          curl -u admin:admin -i -H "Content-Type:application/json" -d "${PAYLOAD}" -X PUT ${TARGETS[i]}
+          curl -u admin:HWseftw33#HWseftw33# -i -H "Content-Type:application/json" -d "${PAYLOAD}" -X PUT ${TARGETS[i]}
         done
 }
 
@@ -528,29 +528,37 @@ loadPersoDetectionAddOns (){
  	cp nifi-add-ons/nifi-BoilerpipeArticleExtractor-nar-1.7.0.3.2.0.0-520.nar /usr/hdf/current/nifi/lib/
  	chown nifi:nifi /usr/hdf/current/nifi/lib/nifi-BoilerpipeArticleExtractor-nar-1.7.0.3.2.0.0-520.nar
  
- 	cp nifi-add-ons/nifi-BoilerpipeArticleExtractor-nar-1.7.0.3.2.0.0-520.nar /usr/hdf/current/nifi/lib/
+ 	cp nifi-add-ons/nifi-MairessePersonalityRecognition-nar-1.5.0.3.1.2.0-7.nar /usr/hdf/current/nifi/lib/
  	chown nifi:nifi /usr/hdf/current/nifi/lib/nifi-MairessePersonalityRecognition-nar-1.5.0.3.1.2.0-7.nar
  
  
  	echo "*********************************Copying lib files..."
- 	cp -R nifi-add-ons/to-upload-to-nifi-home /home/nifi/
- 	cp /usr/hdp/current/hadoop-client/conf/core-site.xml /home/nifi/hdfconf/
- 	cp /usr/hdp/current/hadoop-client/conf/hdfs-site.xml /home/nifi/hdfconf/
+ 	cp -R nifi-add-ons/to-upload-to-nifi-home/* /home/nifi/
+ 	cp /usr/hdp/current/hadoop-client/conf/core-site.xml /home/nifi/hdpconf/
+ 	cp /usr/hdp/current/hadoop-client/conf/hdfs-site.xml /home/nifi/hdpconf/
  	chown -R nifi:nifi /home/nifi/*
  
 }
-echo "*********************************Waiting for cluster install to complete..."
-waitForServiceToStart YARN
 
-waitForServiceToStart HDFS
 
-waitForServiceToStart HIVE
 
-waitForServiceToStart ZOOKEEPER
+export AMBARI_HOST=`cat /etc/ambari-agent/conf/ambari-agent.ini | grep hostname= | sed s/hostname=//g`
+export NIFI_HOST=$(hostname -f)
+echo "*********************************NIFI HOST IS: $NIFI_HOST"
 
-waitForServiceToStart NIFI
 
-sleep 10
+#echo "*********************************Waiting for cluster install to complete..."
+#waitForServiceToStart YARN
+#
+#waitForServiceToStart HDFS
+#
+#waitForServiceToStart HIVE
+#
+#waitForServiceToStart ZOOKEEPER
+#
+#waitForServiceToStart NIFI
+#
+#sleep 10
 
 
 
@@ -561,14 +569,9 @@ echo "*********************************Download Configurations"
 git clone https://github.com/paulvid/perso-detection-demo.git
 cd perso-detection-demo
 
-
 export ROOT_PATH=`pwd`
 echo "*********************************ROOT PATH IS: $ROOT_PATH"
 
-
-#export AMBARI_HOST=$(hostname -f)
-export NIFI_HOST=$(hostname -f)
-echo "*********************************NIFI HOST IS: $NIFI_HOST"
 
 echo "*********************************Loading Nifi Add Ons..."
 loadPersoDetectionAddOns
@@ -592,7 +595,7 @@ sleep 10
 #
 #echo "*********************************AMABRI HOST IS: $AMBARI_HOST"
 #
-#export CLUSTER_NAME=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
+#export CLUSTER_NAME=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
 #
 #if [[ -z $CLUSTER_NAME ]]; then
 #        echo "Could not connect to Ambari Server. Please run the install script on the same host where Ambari Server is installed."
