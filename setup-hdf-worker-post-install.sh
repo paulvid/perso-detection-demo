@@ -581,12 +581,10 @@ loadPersoDetectionAddOns
 
 echo "*********************************Stopping Nifi..."
 stopService NIFI
-sleep 10
 
 
 echo "*********************************Starting Nifi..."
 startServiceAndComplete NIFI
-sleep 10
 
 
 
