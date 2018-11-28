@@ -595,9 +595,9 @@ curl -X POST \
 curl -X POST "http://"$AMBARI_HOST":7788/api/v1/schemaregistry/schemas/personalityrecognition/versions/upload?branch=MASTER" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -F "file=@"$ROOT_PATH"/schema-registry/personalityrecognition.json;type=application/json" -F "description=MASTER"
 
 echo "*********************************Creating Kafka Topic..."
-su kafka
+#su kafka
 /usr/hdp/current/kafka-broker/bin/kafka-topics.sh --zookeeper localhost:2181 --topic personality-recognition --create --partitions 1 --replication-factor 1
-exit
+#exit
 
 
 echo "*********************************Authenticating to Zeppelin..."
