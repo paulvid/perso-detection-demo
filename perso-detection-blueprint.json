@@ -553,6 +553,12 @@
           "name": "TEZ_CLIENT"
         },
         {
+          "name": "HBASE_CLIENT"
+        },
+        {
+          "name": "HIVE_CLIENT"
+        },
+        {
           "name": "METRICS_MONITOR"
         },
         

@@ -1,0 +1,71 @@
+{
+ "type": "record",
+ "name": "personalityrecognition",
+ "fields": [
+  {
+   "name": "web_url",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "snippet",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "byline",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "pub_date",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "headline",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "document_type",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "news_desk",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "timestamp",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "extraversion",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "emotional_stability",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "agreeableness",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "conscientiousness",
+   "type": "string",
+   "default": null
+  },
+  {
+   "name": "openness_to_experience",
+   "type": "string",
+   "default": null
+  }
+ ]
+}

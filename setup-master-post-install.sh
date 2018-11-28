@@ -544,9 +544,10 @@ loadPersoDetectionAddOns (){
 
 
 
-export AMBARI_HOST=`cat /etc/ambari-agent/conf/ambari-agent.ini | grep hostname= | sed s/hostname=//g`
-export NIFI_HOST=$(hostname -f)
-echo "*********************************NIFI HOST IS: $NIFI_HOST"
+export AMBARI_HOST=$(hostname -f)
+
+export CLUSTER_NAME=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
+echo "*********************************AMBARI HOST IS: $NIFI_HOST"
 
 
 #echo "*********************************Waiting for cluster install to complete..."
@@ -575,46 +576,28 @@ export ROOT_PATH=`pwd`
 echo "*********************************ROOT PATH IS: $ROOT_PATH"
 
 
-echo "*********************************Loading Nifi Add Ons..."
-loadPersoDetectionAddOns
+echo "*********************************Loading schema registry..."
+curl -X POST \
+  http://$AMBARI_HOST:7788/api/v1/schemaregistry/schemas \
+  -H 'Content-Type: application/json' \
+  -H 'Postman-Token: 011bd159-33d4-4d9a-8969-eb90d278dafe' \
+  -H 'cache-control: no-cache' \
+  -d '{
+        "type": "avro",
+        "schemaGroup": "Kafka",
+        "name": "personalityrecognition",
+        "description": "Schema for 5 big traits of Personality Psychology",
+        "compatibility": "BACKWARD",
+        "validationLevel": "ALL",
+        "evolve": true
+      }'
 
-echo "*********************************Stopping Nifi..."
-stopService NIFI
-sleep 10
+curl -X POST "http://"$AMBARI_HOST":7788/api/v1/schemaregistry/schemas/personalityrecognition/versions/upload?branch=MASTER" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -F "file=@"$ROOT_PATH"/schema-registry/personalityrecognition.json;type=application/json" -F "description=MASTER"
 
-
-echo "*********************************Starting Nifi..."
-startServiceAndComplete NIFI
-sleep 10
-
-
-
-
-
-
-
-
-#
-#echo "*********************************AMABRI HOST IS: $AMBARI_HOST"
-#
-#export CLUSTER_NAME=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
-#
-#if [[ -z $CLUSTER_NAME ]]; then
-#        echo "Could not connect to Ambari Server. Please run the install script on the same host where Ambari Server is installed."
-#        exit 0
-#else
-#       	echo "*********************************CLUSTER NAME IS: $CLUSTER_NAME"
-#fi
-#
-#export HADOOP_USER_NAME=hdfs
-#echo "*********************************HADOOP_USER_NAME set to HDFS"
-
-
-
-echo "*********************************Loading Nifi Templates..."
-deployTemplateToNifi $ROOT_PATH/templates/ArticlePopularityFlow.xml ArticlePopularityFlow
-deployTemplateToNifi $ROOT_PATH/templates/PersonalityRecognitionFlow.xml PersonalityRecognitionFlow
-deployTemplateToNifi $ROOT_PATH/templates/WebServicesFlow.xml WebServicesFlow
+echo "*********************************Creating Kafka Topic..."
+su kafka
+/usr/hdp/current/kafka-broker/bin/kafka-topics.sh --zookeeper localhost:2181 --topic personality-recognition --create --partitions 1 --replication-factor 1
+exit
 
 
 echo "*********************************Authenticating to Zeppelin..."

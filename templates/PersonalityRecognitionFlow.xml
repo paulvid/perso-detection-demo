@@ -774,7 +774,7 @@
                     <properties>
                         <entry>
                             <key>url</key>
-                            <value>http://seregion-sharedservices2.field.hortonworks.com:7788/api/v1/</value>
+                            <value>http://CHANGE_ME_TO_MASTER_ADDRESS:7788/api/v1/</value>
                         </entry>
                         <entry>
                             <key>cache-size</key>
@@ -1374,7 +1374,7 @@
                         <properties>
                             <entry>
 <key>bootstrap.servers</key>
-<value>seregion-sharedservices0.field.hortonworks.com:6667</value>
+<value>CHANGE_ME_TO_MASTER_ADDRESS:6667</value>
                             </entry>
                             <entry>
 <key>topic</key>
