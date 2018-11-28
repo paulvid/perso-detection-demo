@@ -561,7 +561,6 @@
         {
           "name": "METRICS_MONITOR"
         },
-        
         {
           "name": "STORM_UI_SERVER"
 		},
