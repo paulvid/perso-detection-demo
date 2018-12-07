@@ -549,7 +549,7 @@ loadPersoDetectionAddOns (){
 export AMBARI_HOST=$(hostname -f)
 
 export CLUSTER_NAME=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
-echo "*********************************AMBARI HOST IS: $NIFI_HOST"
+echo "*********************************AMBARI HOST IS: $AMBARI_HOST"
 
 
 #echo "*********************************Waiting for cluster install to complete..."

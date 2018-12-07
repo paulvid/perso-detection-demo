@@ -466,6 +466,9 @@
           "name": "HIVE_CLIENT"
         },
         {
+          "name": "NODEMANAGER"
+		},
+        {
           "name": "STREAMLINE_SERVER"
 		}
       ]
@@ -510,6 +513,9 @@
         {
           "name": "HIVE_CLIENT"
         },
+        {
+          "name": "NODEMANAGER"
+		},
         {
           "name": "METRICS_MONITOR"
         }
@@ -561,6 +567,9 @@
         {
           "name": "METRICS_MONITOR"
         },
+        {
+          "name": "NODEMANAGER"
+		},
         {
           "name": "STORM_UI_SERVER"
 		},
