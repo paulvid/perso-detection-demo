@@ -1,7 +1,7 @@
 # Personality Recognition Demo
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/paulvid/hwx-data-science-workshop/master/HWX_LOGO.png">
+<img src="https://raw.githubusercontent.com/paulvid/perso-detection-demo/master/PERSO_RECOG_DEMO.png">
 </div>
 
 ## Description
