@@ -34,7 +34,7 @@ This bundle contains the following
     * Post  Cluster install: poci-web-server-perso-detection-demo.sh, poci-master-perso-detection-demo.sh, poci-hdf-worker-perso-detection-demo.sh
 
 ### Step 3: Launch Cluster
-* Run the cli command (do not change password, scripts will fail): 
+* Run the cli command (do not change password, scripts will fail): ./cb cluster create --cli-input-json [PATH_TO_YOUR_DOWNLOAD]/tp-perso-detection.json --name perso-detection-demo
 
 ### Step 4: Launch demo
 * Nifi
