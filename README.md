@@ -26,25 +26,28 @@ This bundle contains the following
 
 ### Step 1: Dowload git repo
 *	git clone https://github.com/paulvid/perso-detection-demo.git
+
 ###Step 2: Prepare Cloudbreak
-*	Load BP bp-perso-detection-demo.json to cloudbreak (call it bp-perso-detection-demo)
-*	Load all recipes to cloudbreak
-..*	Pre Ambari start: pras-master-perso-detection-demo.sh
-..*	Post  Cluster install: poci-web-server-perso-detection-demo.sh, poci-master-perso-detection-demo.sh, poci-hdf-worker-perso-detection-demo.sh
+*Load BP bp-perso-detection-demo.json to cloudbreak (call it bp-perso-detection-demo)
+*Load all recipes to cloudbreak
+**Pre Ambari start: pras-master-perso-detection-demo.sh
+**Post  Cluster install: poci-web-server-perso-detection-demo.sh, poci-master-perso-detection-demo.sh, poci-hdf-worker-perso-detection-demo.sh
+
 ###Step 3: Launch Cluster
-–	Run the cli command (do not change password, scripts will fail): 
+*Run the cli command (do not change password, scripts will fail): 
+
 ###Step 4: Launch demo
-*	Nifi
-–	Enable all controller services
-–	Run Personality Recognition + Article Popularity
-–	Run SAM
-–	Run application
-–	Run Zeppelin notebook
-–	After a few hours of article load, run the note personality_recognition
-–	Run dashboard
-–	Go to nifi and run web services processor group
-–	Go to [IP_OF_THE_EDGE_NODE]
-–	Connect as admin/admin
+*Nifi
+**Enable all controller services
+**Run Personality Recognition + Article Popularity
+*Run SAM
+**Run application
+*Run Zeppelin notebook
+**After a few hours of article load, run the note personality_recognition
+*Run dashboard
+**Go to nifi and run web services processor group
+**Go to [IP_OF_THE_EDGE_NODE]
+**Connect as admin/admin
 
 
 ## Versions
