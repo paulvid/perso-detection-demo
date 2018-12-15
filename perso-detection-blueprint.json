@@ -1,4 +1,3 @@
-
 {
   "configurations": [
     {
@@ -46,8 +45,7 @@
     {
       "hdfs-site": {
         "properties_attributes": {},
-        "properties": {
-        }
+        "properties": {}
       }
     },
     {
@@ -73,7 +71,7 @@
     },
     {
       "hive-site": {
-      	"hive.metastore.warehouse.dir": "/apps/hive/warehouse",
+        "hive.metastore.warehouse.dir": "/apps/hive/warehouse",
         "hive.exec.compress.output": "true",
         "hive.merge.mapfiles": "true",
         "hive.server2.tez.initialize.default.sessions": "true",
@@ -317,27 +315,27 @@
         "jar.storage.type": "local",
         "streamline.storage.type": "mysql",
         "streamline.storage.connector.connectURI": "jdbc:mysql://localhost:3306/streamline",
-        "registry.url" : "http://localhost:7788/api/v1",
-        "streamline.dashboard.url" : "http://localhost:9089",
+        "registry.url": "http://localhost:7788/api/v1",
+        "streamline.dashboard.url": "http://localhost:9089",
         "streamline.storage.connector.password": "streamline"
       }
     },
     {
-        "storm-env": {
-            "properties_attributes": {},
-            "properties": {
-                "storm_user_nofile_limit": "128000",
-                "jmxremote_port": "56431",
-                "storm.atlas.hook": "true",
-                "storm_log_dir": "/var/log/storm",
-                "storm_pid_dir": "/var/run/storm",
-                "nimbus_seeds_supported": "true",
-                "storm_logs_supported": "true",
-                "storm_user": "storm",
-                "storm_user_nproc_limit": "65536",
-                "content": "\n#!/bin/bash\n\n# Set Storm specific environment variables here.\n\n# The java implementation to use.\nexport JAVA_HOME={{java64_home}}\n\nexport STORM_CONF_DIR={{conf_dir}}\nexport STORM_HOME={{storm_component_home_dir}}\n\nexport STORM_JAR_JVM_OPTS={{jar_jvm_opts}}\n\n#set storm-auto creds\n# check if storm_jaas.conf in config , only enable storm_auto_creds in secure mode.\nSTORM_JAAS_CONF=$STORM_HOME/conf/storm_jaas.conf\nSTORM_AUTOCREDS_LIB_DIR=$STORM_HOME/external/storm-autocreds\n\nif [ -f $STORM_JAAS_CONF ] && [ -d $STORM_AUTOCREDS_LIB_DIR ]; then\n  export STORM_EXT_CLASSPATH=\"$STORM_AUTOCREDS_LIB_DIR/*\"\nfi"
-            }
+      "storm-env": {
+        "properties_attributes": {},
+        "properties": {
+          "storm_user_nofile_limit": "128000",
+          "jmxremote_port": "56431",
+          "storm.atlas.hook": "true",
+          "storm_log_dir": "/var/log/storm",
+          "storm_pid_dir": "/var/run/storm",
+          "nimbus_seeds_supported": "true",
+          "storm_logs_supported": "true",
+          "storm_user": "storm",
+          "storm_user_nproc_limit": "65536",
+          "content": "\n#!/bin/bash\n\n# Set Storm specific environment variables here.\n\n# The java implementation to use.\nexport JAVA_HOME={{java64_home}}\n\nexport STORM_CONF_DIR={{conf_dir}}\nexport STORM_HOME={{storm_component_home_dir}}\n\nexport STORM_JAR_JVM_OPTS={{jar_jvm_opts}}\n\n#set storm-auto creds\n# check if storm_jaas.conf in config , only enable storm_auto_creds in secure mode.\nSTORM_JAAS_CONF=$STORM_HOME/conf/storm_jaas.conf\nSTORM_AUTOCREDS_LIB_DIR=$STORM_HOME/external/storm-autocreds\n\nif [ -f $STORM_JAAS_CONF ] && [ -d $STORM_AUTOCREDS_LIB_DIR ]; then\n  export STORM_EXT_CLASSPATH=\"$STORM_AUTOCREDS_LIB_DIR/*\"\nfi"
         }
+      }
     }
   ],
   "host_groups": [
@@ -467,10 +465,10 @@
         },
         {
           "name": "NODEMANAGER"
-		},
+        },
         {
           "name": "STREAMLINE_SERVER"
-		}
+        }
       ]
     },
     {
@@ -515,7 +513,7 @@
         },
         {
           "name": "NODEMANAGER"
-		},
+        },
         {
           "name": "METRICS_MONITOR"
         }
@@ -550,6 +548,9 @@
           "name": "ATLAS_CLIENT"
         },
         {
+          "name": "HDFS_CLIENT"
+        },
+        {
           "name": "SPARK2_CLIENT"
         },
         {
@@ -569,13 +570,25 @@
         },
         {
           "name": "NODEMANAGER"
-		},
+        },
         {
           "name": "STORM_UI_SERVER"
-		},
+        },
         {
           "name": "NIMBUS"
-		}
+        }
+      ]
+    },
+    {
+      "name": "edge_web_server",
+      "cardinality": "1",
+      "components": [
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "HDFS_CLIENT"
+        }
       ]
     }
   ],

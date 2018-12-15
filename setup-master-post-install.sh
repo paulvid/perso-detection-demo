@@ -10,7 +10,22 @@ installUtils () {
 	echo "*********************************Installing PIP..."
 	yum install -y pip
 	pip install numpy
-	
+
+  echo "*********************************Installing Maven..."
+	wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O 	/etc/yum.repos.d/epel-apache-maven.repo
+	if [ $(cat /etc/system-release|grep -Po Amazon) == Amazon ]; then
+		sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+	fi
+	yum install -y apache-maven
+	if [ $(cat /etc/system-release|grep -Po Amazon) == Amazon ]; then
+		alternatives --install /usr/bin/java java /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/java 20000
+		alternatives --install /usr/bin/javac javac /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/javac 20000
+		alternatives --install /usr/bin/jar jar /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/jar 20000
+		alternatives --auto java
+		alternatives --auto javac
+		alternatives --auto jar
+		ln -s /usr/lib/jvm/java-1.8.0 /usr/lib/jvm/java
+	fi	
 }
 
 waitForAmbari () {
@@ -544,27 +559,40 @@ loadPersoDetectionAddOns (){
  
 }
 
+uploadSAMExtensions() {
+	#Import UDF
+	cd $ROOT_PATH/sam-udf/
+	mvn clean package
+	mvn assembly:assembly
 
+	curl -F udfJarFile=@$ROOT_PATH/sam-udf/sam-custom-udf-3.1.0.0.jar -F 'udfConfig={"name":"NORMALIZE_BYLINE","displayName":"NORMALIZE_BYLINE","description":"Removes the BY in from of byline","type":"FUNCTION","className":"hortonworks.hdf.sam.custom.udf.math.NormalizeByLine"};type=application/json' -X POST http://$AMBARI_HOST:7777/api/v1/catalog/streams/udfs
+
+	#Import Custom Processors
+	# cd $ROOT_PATH/sam-custom-extensions/sam-custom-processor
+	# mvn clean package -DskipTests
+	# mvn assembly:assembly -DskipTests
+
+	# curl -sS -X POST -i -F jarFile=@$ROOT_PATH/sam-custom-extensions/sam-custom-processor/target/sam-custom-processor-0.0.5-jar-with-dependencies.jar http://$AMBARI_HOST:7777/api/v1/catalog/streams/componentbundles/PROCESSOR/custom -F customProcessorInfo=@$ROOT_PATH/sam-custom-extensions/sam-custom-processor/src/main/resources/phoenix-enrich-truck-demo.json
+
+	# curl -sS -X POST -i -F jarFile=@$ROOT_PATH/sam-custom-extensions/sam-custom-processor/target/sam-custom-processor-0.0.5.jar http://$AMBARI_HOST:7777/api/v1/catalog/streams/componentbundles/PROCESSOR/custom -F customProcessorInfo=@$ROOT_PATH/sam-custom-extensions/sam-custom-processor/src/main/resources/enrich-weather.json
+	
+	# cp $ROOT_PATH/sam-custom-extensions/sam-custom-processor/target/sam-custom-processor-0.0.5.jar $ROOT_PATH/sam-custom-extensions/sam-custom-processor/target/sam-custom-processor-0.0.5a.jar 
+
+	# curl -sS -X POST -i -F jarFile=@$ROOT_PATH/sam-custom-extensions/sam-custom-processor/target/sam-custom-processor-0.0.5a.jar http://$AMBARI_HOST:7777/api/v1/catalog/streams/componentbundles/PROCESSOR/custom -F customProcessorInfo=@$ROOT_PATH/sam-custom-extensions/sam-custom-processor/src/main/resources/normalize-model-features.json
+}
+
+createSAMCluster() {
+	#Import cluster
+	export CLUSTER_ID=$(curl -H "content-type:application/json" -X POST http://$AMBARI_HOST:7777/api/v1/catalog/clusters -d '{"name":"'$CLUSTER_NAME'","description":"Demo Cluster","ambariImportUrl":"http://'$AMBARI_HOST':8080/api/v1/clusters/'$CLUSTER_NAME'"}'| grep -Po '\"id\":([0-9]+)'|grep -Po '([0-9]+)')
+
+	#Import cluster config
+	curl -H "content-type:application/json" -X POST http://$AMBARI_HOST:7777/api/v1/catalog/cluster/import/ambari -d '{"clusterId":'$CLUSTER_ID',"ambariRestApiRootUrl":"http://'$AMBARI_HOST':8080/api/v1/clusters/'$CLUSTER_NAME'","password":"admin","username":"admin"}'
+}
 
 export AMBARI_HOST=$(hostname -f)
 
-export CLUSTER_NAME=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
+export CLUSTER_NAME=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
 echo "*********************************AMBARI HOST IS: $AMBARI_HOST"
-
-
-#echo "*********************************Waiting for cluster install to complete..."
-#waitForServiceToStart YARN
-#
-#waitForServiceToStart HDFS
-#
-#waitForServiceToStart HIVE
-#
-#waitForServiceToStart ZOOKEEPER
-#
-#waitForServiceToStart NIFI
-#
-#sleep 10
-
 
 
 echo "*********************************Install Utilities..."

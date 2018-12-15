@@ -545,7 +545,7 @@ loadPersoDetectionAddOns (){
 
 
 export AMBARI_HOST=`cat /etc/ambari-agent/conf/ambari-agent.ini | grep hostname= | sed s/hostname=//g`
-export CLUSTER_NAME=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
+export CLUSTER_NAME=$(curl -u admin:HWseftw33#HWseftw33# -X GET http://$AMBARI_HOST:8080/api/v1/clusters |grep cluster_name|grep -Po ': "(.+)'|grep -Po '[a-zA-Z0-9\-_!?.]+')
 export NIFI_HOST=$(hostname -f)
 echo "*********************************NIFI HOST IS: $NIFI_HOST"
 
@@ -569,8 +569,9 @@ echo "*********************************Install Utilities..."
 installUtils
 
 echo "*********************************Download Configurations"
+cd /var/www/html
 git clone https://github.com/paulvid/perso-detection-demo.git
-cd perso-detection-demo
+cd perso-detection-demo/
 
 export ROOT_PATH=`pwd`
 echo "*********************************ROOT PATH IS: $ROOT_PATH"
