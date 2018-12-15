@@ -25,7 +25,7 @@ This bundle contains the following
 ## Install
 
 ### Step 1: Dowload git repo
-*	git clone https://github.com/paulvid/perso-detection-demo.git
+*git clone https://github.com/paulvid/perso-detection-demo.git
 
 ###Step 2: Prepare Cloudbreak
 *Load BP bp-perso-detection-demo.json to cloudbreak (call it bp-perso-detection-demo)
