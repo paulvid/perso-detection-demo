@@ -597,8 +597,8 @@ initializeSAMNamespace () {
 	curl -H "content-type:application/json" -X POST http://$AMBARI_HOST:7777/api/v1/catalog/namespaces/$NAMESPACE_ID/mapping/bulk -d '[{"clusterId":'$CLUSTER_ID',"serviceName":"STORM","namespaceId":'$NAMESPACE_ID'},{"clusterId":'$CLUSTER_ID',"serviceName":"KAFKA","namespaceId":'$NAMESPACE_ID'},{"clusterId":'$CLUSTER_ID',"serviceName":"DRUID","namespaceId":'$NAMESPACE_ID'}]'
 }
 importSAMTopology () {
-	SAM_DIR=$ROOT_PATH/sam/perso-detection-rt.json 
-	TOPOLOGY_NAME=perso-detection-rt
+	export SAM_DIR=$ROOT_PATH/sam/perso-detection-rt.json 
+	export TOPOLOGY_NAME=perso-detection-rt
 	#Import Topology
 	sed -r -i 's;\{\{HOST1\}\};'$AMBARI_HOST';g' $SAM_DIR
 	sed -r -i 's;\{\{CLUSTERNAME\}\};'$CLUSTER_NAME';g' $SAM_DIR
