@@ -569,7 +569,6 @@ echo "*********************************Install Utilities..."
 installUtils
 
 echo "*********************************Download Configurations"
-cd /var/www/html
 git clone https://github.com/paulvid/perso-detection-demo.git
 cd perso-detection-demo/
 
