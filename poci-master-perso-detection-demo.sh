@@ -600,8 +600,8 @@ importSAMTopology () {
 	export SAM_DIR=$ROOT_PATH/sam/perso-detection-rt.json 
 	export TOPOLOGY_NAME=perso-detection-rt
 	#Import Topology
-	sed -r -i 's;\{\{HOST1\}\};'$AMBARI_HOST';g' $SAM_DIR
-	sed -r -i 's;\{\{CLUSTERNAME\}\};'$CLUSTER_NAME';g' $SAM_DIR
+	sed -i "s/HOST1/"$AMBARI_HOST"/g" $SAM_DIR
+	sed -i "s/CLUSTERNAME/"$CLUSTER_NAME"/g" $SAM_DIR
  
 	export TOPOLOGY_ID=$(curl -F file=@$SAM_DIR -F 'topologyName='$TOPOLOGY_NAME -F 'namespaceId='$NAMESPACE_ID -X POST http://$AMBARI_HOST:7777/api/v1/catalog/topologies/actions/import| grep -Po '\"id\":([0-9]+)'|grep -Po '([0-9]+)')
 
@@ -671,7 +671,7 @@ echo "*********************************Loading notes..."
 uploadSAMExtensions
 createSAMCluster
 initializeSAMNamespace
-
+importSAMTopology
 
 #echo "********************************* Configuring Nifi Template"
 #configureNifiTempate

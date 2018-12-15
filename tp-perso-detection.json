@@ -1,0 +1,233 @@
+{
+    "general": {
+      "name": "",
+      "credentialName": "pvidal-local-cloudbreak"
+    },
+    "placement": {
+      "availabilityZone": "us-east-1a",
+      "region": "us-east-1"
+    },
+    "parameters": {},
+    "inputs": {},
+    "customDomain": {
+      "clusterNameAsSubdomain": false,
+      "hostgroupNameAsHostname": false
+    },
+    "tags": {
+      "userDefinedTags": {}
+    },
+    "instanceGroups": [
+      {
+        "nodeCount": 1,
+        "group": "hdf_worker",
+        "type": "CORE",
+        "parameters": {},
+        "template": {
+          "volumeCount": 1,
+          "volumeSize": 100,
+          "rootVolumeSize": 50,
+          "parameters": {
+            "encrypted": false,
+            "platformType": "AWS",
+            "type": "NONE"
+          },
+          "volumeType": "standard",
+          "instanceType": "m5.2xlarge"
+        },
+        "securityGroup": {
+          "securityGroupIds": [],
+          "securityRules": [
+            {
+              "subnet": "68.238.247.254/32",
+              "ports": "1-65535",
+              "protocol": "tcp"
+            },
+            {
+              "subnet": "0.0.0.0/0",
+              "ports": "22",
+              "protocol": "tcp"
+            }
+          ]
+        },
+        "recipeNames": [
+          "poci-hdf-worker-perso-detection-demo"
+        ],
+        "recoveryMode": "MANUAL"
+      },
+      {
+        "nodeCount": 1,
+        "group": "edge_web_server",
+        "type": "CORE",
+        "parameters": {},
+        "template": {
+          "volumeCount": 1,
+          "volumeSize": 100,
+          "rootVolumeSize": 50,
+          "parameters": {
+            "encrypted": false,
+            "platformType": "AWS",
+            "type": "NONE"
+          },
+          "volumeType": "standard",
+          "instanceType": "m5.xlarge"
+        },
+        "securityGroup": {
+          "securityGroupIds": [],
+          "securityRules": [
+            {
+              "subnet": "68.238.247.254/32",
+              "ports": "1-65535",
+              "protocol": "tcp"
+            },
+            {
+              "subnet": "0.0.0.0/0",
+              "ports": "22",
+              "protocol": "tcp"
+            }
+          ]
+        },
+        "recipeNames": [
+          "poci-web-server-perso-detection-demo"
+        ],
+        "recoveryMode": "MANUAL"
+      },
+      {
+        "nodeCount": 1,
+        "group": "master",
+        "type": "GATEWAY",
+        "parameters": {},
+        "template": {
+          "volumeCount": 1,
+          "volumeSize": 100,
+          "rootVolumeSize": 50,
+          "parameters": {
+            "encrypted": false,
+            "platformType": "AWS",
+            "type": "NONE"
+          },
+          "volumeType": "standard",
+          "instanceType": "m5.2xlarge"
+        },
+        "securityGroup": {
+          "securityGroupIds": [],
+          "securityRules": [
+            {
+              "subnet": "0.0.0.0/0",
+              "ports": "9443",
+              "protocol": "tcp"
+            },
+            {
+              "subnet": "68.238.247.254/32",
+              "ports": "1-65535",
+              "protocol": "tcp"
+            },
+            {
+              "subnet": "0.0.0.0/0",
+              "ports": "22",
+              "protocol": "tcp"
+            },
+            {
+              "subnet": "0.0.0.0/0",
+              "ports": "8443",
+              "protocol": "tcp"
+            }
+          ]
+        },
+        "recipeNames": [
+          "poci-master-perso-detection-demo",
+          "pras-master-perso-detection-demo"
+        ],
+        "recoveryMode": "MANUAL"
+      },
+      {
+        "nodeCount": 1,
+        "group": "hdp_worker",
+        "type": "CORE",
+        "parameters": {},
+        "template": {
+          "volumeCount": 1,
+          "volumeSize": 100,
+          "rootVolumeSize": 50,
+          "parameters": {
+            "encrypted": false,
+            "platformType": "AWS",
+            "type": "NONE"
+          },
+          "volumeType": "standard",
+          "instanceType": "m5.xlarge"
+        },
+        "securityGroup": {
+          "securityGroupIds": [],
+          "securityRules": [
+            {
+              "subnet": "0.0.0.0/0",
+              "ports": "22",
+              "protocol": "tcp"
+            },
+            {
+              "subnet": "68.238.247.254/32",
+              "ports": "1-65535",
+              "protocol": "tcp"
+            }
+          ]
+        },
+        "recipeNames": [],
+        "recoveryMode": "MANUAL"
+      }
+    ],
+    "stackAuthentication": {
+      "publicKeyId": "_field"
+    },
+    "network": {
+      "parameters": {
+        "subnetId": "subnet-dff56386",
+        "vpcId": "vpc-d85076bd"
+      }
+    },
+    "imageSettings": {
+      "imageCatalog": "cloudbreak-default",
+      "imageId": "2c5cd6ea-7d5b-4004-73f2-27ad2e1ce7a9"
+    },
+    "cluster": {
+      "emailNeeded": false,
+      "rdsConfigNames": [],
+      "ambari": {
+        "blueprintName": "bp-perso-detection-demo",
+        "gateway": {
+          "topologies": [
+            {
+              "topologyName": "dp-proxy",
+              "exposedServices": [
+                "AMBARI"
+              ]
+            }
+          ],
+          "gatewayType": "INDIVIDUAL",
+          "ssoType": "NONE"
+        },
+        "enableSecurity": false,
+        "userName": "admin",
+        "password": "HWseftw33#HWseftw33#",
+        "validateRepositories": false,
+        "ambariStackDetails": {
+          "stack": "HDP",
+          "version": "3.0",
+          "stackRepoId": "HDP",
+          "enableGplRepo": false,
+          "verify": false,
+          "repositoryVersion": "3.0.1.0-187",
+          "versionDefinitionFileUrl": "http://public-repo-1.hortonworks.com/HDP/centos7/3.x/updates/3.0.1.0/HDP-3.0.1.0-187.xml",
+          "mpacks": [
+            {
+              "name": "hdf-3-2-aws"
+            }
+          ]
+        },
+        "ambariRepoDetailsJson": {
+          "version": "2.7.1.0",
+          "baseUrl": "http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.7.1.0",
+          "gpgKeyUrl": "http://public-repo-1.hortonworks.com/ambari/centos7/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
+        }
+      }
+    }
+  }
